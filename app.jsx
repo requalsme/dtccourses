@@ -332,6 +332,22 @@ function App(){
   const [view,setView]=React.useState(()=>{try{return sessionStorage.getItem('dtc_view')||"dashboard";}catch(e){return "dashboard";}}); // dashboard | course | certs
   const [activeCourse,setActiveCourse]=React.useState(()=>{try{return sessionStorage.getItem('dtc_course')||null;}catch(e){return null;}});
   const [toastMsg,setToastMsg]=React.useState(null);
+  // Identity handoff from the DTC app. If a ?h=token is present, sign the learner
+  // in as their app profile (no access code) and remember their email so
+  // completions link back to that exact profile.
+  const [handoffPending,setHandoffPending]=React.useState(()=>{try{return new URLSearchParams(window.location.search).has('h');}catch(e){return false;}});
+
+  React.useEffect(()=>{
+    if(!handoffPending) return;
+    var token=null; try{ token=new URLSearchParams(window.location.search).get('h'); }catch(e){}
+    if(token && typeof window.DTC_getHandoff==="function"){
+      window.DTC_getHandoff(token).then(function(h){
+        if(h && h.name){ setState(function(s){ return { user:h.name, dob:s.dob||null, email:(h.email||'').toLowerCase(), uid:h.uid||'', progress:s.progress||{} }; }); }
+        try{ history.replaceState(null,'',window.location.pathname); }catch(e){}
+        setHandoffPending(false);
+      });
+    } else { setHandoffPending(false); }
+  },[handoffPending]);
 
   React.useEffect(()=>{try{sessionStorage.setItem('dtc_view',view);if(activeCourse)sessionStorage.setItem('dtc_course',activeCourse);else sessionStorage.removeItem('dtc_course');}catch(e){}},[view,activeCourse]);
 
@@ -344,10 +360,20 @@ function App(){
     setState({user:null,dob:null,progress:{}});
   }
 
+  if(handoffPending) return <div style={{minHeight:"100vh",display:"grid",placeItems:"center",fontFamily:"system-ui",color:"#5A6B62"}}><div style={{textAlign:"center"}}><div className="spinner dark" style={{margin:"0 auto 14px"}}></div>Signing you in…</div></div>;
   if(!state.user) return <SignIn onSubmit={(name,dob)=>setState({user:name,dob,progress:{}})}/>;
 
   function openCourse(id){ setActiveCourse(id); setView("course"); window.scrollTo(0,0); }
-  function completeCourse(id,rec){ setState(s=>({...s,progress:{...s.progress,[id]:rec}})); }
+  function completeCourse(id,rec){
+    setState(s=>({...s,progress:{...s.progress,[id]:rec}}));
+    // Sync a completion record to the DTC app (best-effort; see firebase-sync.js).
+    try {
+      if (rec && rec.passed && typeof window.DTC_saveCertificate === "function") {
+        var c = (courses || []).find(function(x){ return x.id === id; }) || {};
+        window.DTC_saveCertificate({ name: state.user, dob: state.dob, email: state.email, uid: state.uid, courseId: id, courseTitle: c.title, score: rec.score, date: rec.date });
+      }
+    } catch(e) { /* never block course completion */ }
+  }
   function nav(v){ setView(v); setActiveCourse(null); window.scrollTo(0,0); }
 
   const course=courses.find(c=>c.id===activeCourse);
