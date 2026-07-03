@@ -342,16 +342,28 @@ function App(){
     var token=null; try{ token=new URLSearchParams(window.location.search).get('h'); }catch(e){}
     if(token && typeof window.DTC_getHandoff==="function"){
       window.DTC_getHandoff(token).then(function(h){
-        if(h && h.name){ setState(function(s){ return { user:h.name, dob:s.dob||null, email:(h.email||'').toLowerCase(), uid:h.uid||'', progress:s.progress||{} }; }); }
         try{ history.replaceState(null,'',window.location.pathname); }catch(e){}
-        setHandoffPending(false);
+        if(h && h.name){
+          var applyProgress=function(remote){
+            setState(function(s){ return { user:h.name, dob:s.dob||null, email:(h.email||'').toLowerCase(), uid:h.uid||'', progress:Object.assign({}, s.progress||{}, remote||{}) }; });
+            setHandoffPending(false);
+          };
+          if(h.uid && typeof window.DTC_loadProgress==="function"){ window.DTC_loadProgress(h.uid).then(applyProgress); }
+          else { applyProgress({}); }
+        } else { setHandoffPending(false); }
       });
     } else { setHandoffPending(false); }
   },[handoffPending]);
 
   React.useEffect(()=>{try{sessionStorage.setItem('dtc_view',view);if(activeCourse)sessionStorage.setItem('dtc_course',activeCourse);else sessionStorage.removeItem('dtc_course');}catch(e){}},[view,activeCourse]);
 
-  React.useEffect(()=>{save(state);},[state]);
+  React.useEffect(()=>{
+    save(state);
+    // Persist progress to the user's profile (handoff users only) so it follows them.
+    if(state.uid && typeof window.DTC_saveProgress==="function"){
+      window.DTC_saveProgress(state.uid, state.progress, {email:state.email, uid:state.uid, name:state.user});
+    }
+  },[state]);
   function toast(m){ setToastMsg(m); clearTimeout(window.__t); window.__t=setTimeout(()=>setToastMsg(null),3200); }
 
   function signOut(){

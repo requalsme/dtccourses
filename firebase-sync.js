@@ -69,6 +69,38 @@
         setTimeout(function () { finish(null); }, 6000);
       });
     };
+
+    // Persistent course progress, tied to the user's profile (keyed by their app
+    // uid). Load on sign-in, save on change — so progress follows the user across
+    // devices instead of living only in this browser.
+    window.DTC_loadProgress = function (key) {
+      return new Promise(function (resolve) {
+        var done = false;
+        function finish(v) { if (!done) { done = true; resolve(v || {}); } }
+        function read() {
+          db.collection("courseProgress").doc(key).get()
+            .then(function (s) { finish(s.exists ? (s.data().progress || {}) : {}); })
+            .catch(function () { finish({}); });
+        }
+        try {
+          if (firebase.auth().currentUser) { read(); }
+          else { firebase.auth().signInAnonymously().then(read).catch(function () { finish({}); }); }
+        } catch (e) { finish({}); }
+        setTimeout(function () { finish({}); }, 6000);
+      });
+    };
+
+    window.DTC_saveProgress = function (key, progress, ident) {
+      try {
+        return db.collection("courseProgress").doc(key).set({
+          progress: progress || {},
+          email: (ident && ident.email) || "",
+          uid: (ident && ident.uid) || "",
+          name: (ident && ident.name) || "",
+          updatedAt: new Date().toISOString()
+        }, { merge: true }).catch(function (e) { console.warn("[DTC] progress save failed:", e && e.code); });
+      } catch (e) { console.warn("[DTC] progress save error:", e); }
+    };
   } catch (e) {
     console.warn("[DTC] Firebase sync unavailable:", e);
   }
