@@ -339,7 +339,8 @@ function App(){
 
   React.useEffect(()=>{
     if(!handoffPending) return;
-    var token=null; try{ token=new URLSearchParams(window.location.search).get('h'); }catch(e){}
+    var token=null, courseParam=null;
+    try{ var qs=new URLSearchParams(window.location.search); token=qs.get('h'); courseParam=qs.get('course'); }catch(e){}
     if(token && typeof window.DTC_getHandoff==="function"){
       window.DTC_getHandoff(token).then(function(h){
         try{ history.replaceState(null,'',window.location.pathname); }catch(e){}
@@ -347,6 +348,11 @@ function App(){
           var applyProgress=function(remote){
             setState(function(s){ return { user:h.name, dob:s.dob||null, email:(h.email||'').toLowerCase(), uid:h.uid||'', progress:Object.assign({}, s.progress||{}, remote||{}) }; });
             setHandoffPending(false);
+            // Deep link: land directly on the module the DTC app sent them to open,
+            // instead of the course dashboard, so the two products feel like one.
+            if(courseParam && (courses||[]).some(function(c){return c.id===courseParam;})){
+              setActiveCourse(courseParam); setView("course");
+            }
           };
           if(h.uid && typeof window.DTC_loadProgress==="function"){ window.DTC_loadProgress(h.uid).then(applyProgress); }
           else { applyProgress({}); }
