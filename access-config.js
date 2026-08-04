@@ -1,4 +1,19 @@
 window.DTC_ACCESS = {
+  // THE SWITCH. Flip to true once everyone has a Dare to Care app account.
+  //
+  // false (today): learners can sign in either by handoff from the DTC app, or
+  //   with name + date of birth + a shared access code. Existing caregivers rely
+  //   on the code path for annual refreshers, so it stays open for now.
+  //
+  // true (the goal): the access-code form disappears and the ONLY way in is a
+  //   handoff from the app. That is what makes the training gate airtight — a
+  //   shared code can be passed to someone whose training hasn't been released,
+  //   and no amount of checking on this site can tell the difference.
+  //
+  // Before flipping it: every caregiver who takes courses needs an app account,
+  // otherwise they are locked out of their own annual training.
+  requireAppSignIn: false,
+
   codes: ["DTCHC-0000"], // optional permanent backup — remove later
 
   remoteUrl: "",

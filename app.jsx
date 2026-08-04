@@ -336,17 +336,36 @@ function App(){
   // in as their app profile (no access code) and remember their email so
   // completions link back to that exact profile.
   const [handoffPending,setHandoffPending]=React.useState(()=>{try{return new URLSearchParams(window.location.search).has('h');}catch(e){return false;}});
+  // Set when a handoff is rejected, so the learner gets a reason instead of
+  // being silently dropped onto the access-code screen.
+  const [handoffBlocked,setHandoffBlocked]=React.useState(null);
 
   React.useEffect(()=>{
     if(!handoffPending) return;
-    var token=null; try{ token=new URLSearchParams(window.location.search).get('h'); }catch(e){}
+    var token=null, courseParam=null;
+    try{ var qs=new URLSearchParams(window.location.search); token=qs.get('h'); courseParam=qs.get('course'); }catch(e){}
     if(token && typeof window.DTC_getHandoff==="function"){
       window.DTC_getHandoff(token).then(function(h){
         try{ history.replaceState(null,'',window.location.pathname); }catch(e){}
+        // Verify the handoff rather than trusting whoever opened the link.
+        // A new hire only reaches training after an office manager releases it,
+        // and a handoff is good for one hop, not indefinitely.
+        var expired = h && h.expiresAt && (new Date(h.expiresAt).getTime() < Date.now());
+        var notReleased = h && h.role === "newHire" && !h.coursesUnlockedAt;
+        if(h && (expired || notReleased)){
+          setHandoffBlocked(notReleased ? "not-released" : "expired");
+          setHandoffPending(false);
+          return;
+        }
         if(h && h.name){
           var applyProgress=function(remote){
             setState(function(s){ return { user:h.name, dob:s.dob||null, email:(h.email||'').toLowerCase(), uid:h.uid||'', progress:Object.assign({}, s.progress||{}, remote||{}) }; });
             setHandoffPending(false);
+            // Deep link: land directly on the module the DTC app sent them to open,
+            // instead of the course dashboard, so the two products feel like one.
+            if(courseParam && (courses||[]).some(function(c){return c.id===courseParam;})){
+              setActiveCourse(courseParam); setView("course");
+            }
           };
           if(h.uid && typeof window.DTC_loadProgress==="function"){ window.DTC_loadProgress(h.uid).then(applyProgress); }
           else { applyProgress({}); }
@@ -373,6 +392,37 @@ function App(){
   }
 
   if(handoffPending) return <div style={{minHeight:"100vh",display:"grid",placeItems:"center",fontFamily:"system-ui",color:"#5A6B62"}}><div style={{textAlign:"center"}}><div className="spinner dark" style={{margin:"0 auto 14px"}}></div>Signing you in…</div></div>;
+  if(handoffBlocked) return <div style={{minHeight:"100vh",display:"grid",placeItems:"center",fontFamily:"system-ui",color:"#3B4A43",padding:"24px"}}>
+    <div style={{textAlign:"center",maxWidth:440}}>
+      <div style={{fontSize:19,fontWeight:700,marginBottom:10}}>
+        {handoffBlocked==="not-released" ? "Your training hasn't been released yet" : "This link has expired"}
+      </div>
+      <div style={{fontSize:14,lineHeight:1.6,color:"#5A6B62"}}>
+        {handoffBlocked==="not-released"
+          ? "Finish your new-hire paperwork in the Dare to Care app first. Once your office manager reviews it they'll release your training, and the link will work."
+          : "Training links are only good for a few minutes. Open Training Courses again from the Dare to Care app to get a fresh one."}
+      </div>
+    </div>
+  </div>;
+  // When requireAppSignIn is on, the access-code form is gone entirely and the
+  // only way in is a handoff from the DTC app. A shared code can be passed to
+  // someone whose training hasn't been released, and nothing on this site can
+  // tell the difference — so closing that path is what makes the gate real.
+  if(!state.user && (window.DTC_ACCESS||{}).requireAppSignIn) return (
+    <div style={{minHeight:"100vh",display:"grid",placeItems:"center",fontFamily:"system-ui",color:"#3B4A43",padding:"24px"}}>
+      <div style={{textAlign:"center",maxWidth:430}}>
+        <div style={{fontSize:19,fontWeight:700,marginBottom:10}}>Open training from the Dare to Care app</div>
+        <div style={{fontSize:14,lineHeight:1.6,color:"#5A6B62",marginBottom:18}}>
+          Sign in to the Dare to Care app and choose <strong>Training Courses</strong>.
+          You'll be brought straight here, already signed in, and your certificates
+          will save to your profile automatically.
+        </div>
+        <a href="https://forms.daretocarehomecare.com" style={{display:"inline-block",background:"#2f8a68",color:"#fff",textDecoration:"none",padding:"11px 20px",borderRadius:8,fontWeight:600,fontSize:14}}>
+          Go to the Dare to Care app
+        </a>
+      </div>
+    </div>
+  );
   if(!state.user) return <SignIn onSubmit={(name,dob)=>setState({user:name,dob,progress:{}})}/>;
 
   function openCourse(id){ setActiveCourse(id); setView("course"); window.scrollTo(0,0); }
