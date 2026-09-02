@@ -71,6 +71,7 @@ function SignIn({onSubmit}){
   const [codeErr,setCodeErr]=React.useState(false);
   const [checking,setChecking]=React.useState(false);
   const cfg=window.DTC_CONFIG;
+  const totalCourses=window.DTC_COURSES?.length||0;
   const dobMax=React.useMemo(()=>{
     const d=new Date();
     d.setFullYear(d.getFullYear()-15);
@@ -100,11 +101,11 @@ function SignIn({onSubmit}){
         <div className="logo-chip"><img src={cfg.logo} alt="Dare to Care Home Care"/></div>
         <div>
           <h2>Caregiver Training & Certification</h2>
-          <p>Six required modules to keep our clients safe, respected, and well cared for.</p>
+          <p>{totalCourses} required modules to keep our clients safe, respected, and well cared for.</p>
           <ul>
             <li><span className="tick"><Icon name="check" size={14} style={{color:"#fff"}}/></span> Complete each module, then pass a short quiz</li>
             <li><span className="tick"><Icon name="check" size={14} style={{color:"#fff"}}/></span> Score {cfg.passPct}% or higher to earn a certificate</li>
-            <li><span className="tick"><Icon name="check" size={14} style={{color:"#fff"}}/></span> Download all six certificates when complete</li>
+            <li><span className="tick"><Icon name="check" size={14} style={{color:"#fff"}}/></span> Download all {totalCourses} certificates when complete</li>
           </ul>
         </div>
         <div style={{fontSize:13,color:"#9ecbb2"}}>© {new Date().getFullYear()} Dare to Care Home Care</div>
@@ -174,8 +175,8 @@ function Dashboard({courses, progress, name, onOpen, goCerts}){
         <div className="alldone">
           <div className="badge-ico"><Icon name="award" size={32} style={{color:"#fff"}}/></div>
           <div style={{flex:1,minWidth:240}}>
-            <h3>All six modules complete — outstanding work, {name.split(" ")[0]}!</h3>
-            <p>Your full certification packet is ready. Download all six certificates for your records.</p>
+            <h3>All {courses.length} modules complete — outstanding work, {name.split(" ")[0]}!</h3>
+            <p>Your full certification packet is ready. Download all {courses.length} certificates for your records.</p>
           </div>
           <button className="btn gold lg" onClick={goCerts}><Icon name="award" size={18}/> View certificates</button>
         </div>}
@@ -184,7 +185,7 @@ function Dashboard({courses, progress, name, onOpen, goCerts}){
         <div>
           <span className="eyebrow">Your training</span>
           <h1 className="title">Welcome, {name.split(" ")[0]}</h1>
-          <p className="lead">Complete all six modules to become a certified Dare to Care caregiver. Take them in any order.</p>
+          <p className="lead">Complete all {courses.length} modules to become a certified Dare to Care caregiver. Take them in any order.</p>
         </div>
         <div className="progress-summary">
           <ProgressRing pct={pct} label={done+"/"+courses.length}/>

@@ -22,6 +22,7 @@ function CertSeal(){
 
 function Certificate({rec, course, cfg, id="certificate"}){
   const certId = makeCertId(rec.name, course.code, rec.date);
+  const totalCourses = window.DTC_COURSES?.length || course.num;
   return (
     <div className="certificate" id={id} data-cert={course.id}>
       {/* guilloche pattern */}
@@ -53,7 +54,7 @@ function Certificate({rec, course, cfg, id="certificate"}){
         </div>
         <div className="cert-course">{course.title}</div>
         <div className="cert-score">
-          Assessment score: {rec.score}% &nbsp;·&nbsp; Passing standard: {cfg.passPct}% &nbsp;·&nbsp; Module {String(course.num).padStart(2,"0")} of 06
+          Assessment score: {rec.score}% &nbsp;·&nbsp; Passing standard: {cfg.passPct}% &nbsp;·&nbsp; Module {String(course.num).padStart(2,"0")} of {String(totalCourses).padStart(2,"0")}
         </div>
       </div>
 

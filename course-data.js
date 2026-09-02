@@ -155,6 +155,33 @@ window.DTC_COURSES = [
       { q: "Examples of respectful, ethical practice include:", options: ["Active listening, inclusive communication, and cultural sensitivity", "Ignoring client feedback", "Making decisions without the client", "Dismissing individuality"], answer: 0, why: "Respectful practice includes active listening, inclusive communication, and cultural sensitivity." },
       { q: "The right to redress means clients have the right to:", options: ["Access free medication", "Address grievances", "Refuse to pay", "Demand a specific caregiver"], answer: 1, why: "Redress is the right to address grievances and concerns." }
     ]
+  },
+  {
+    id: "ihss",
+    num: 7,
+    code: "IH",
+    title: "Colorado IHSS Training",
+    short: "Colorado IHSS",
+    blurb: "An IHSS orientation — attendant roles, Care Plan boundaries, Workday learning, and specialized training.",
+    minutes: 7,
+    video: "assets/videos/colorado-ihss-training.mp4",
+    icon: "hands",
+    intro: "Colorado IHSS Training introduces the Attendant role, essential rules for assigned Care Plan tasks, the Workday Learning pathway, and specialized training topics.",
+    sections: [
+      { h: "Welcome to IHSS", p: "An Attendant is a person employed by an IHSS Agency to provide care. The source notes that family members or spouses may be Attendants." },
+      { h: "Essential Skills & Rules", p: "Perform assigned Care Plan tasks. Do not represent yourself as a licensed nurse." },
+      { h: "Your Training Portal", p: "The Workday Learning path shown is: create an individual account, attend a virtual Teams session, pass the final test, and download the completion certificate. Complete Provider Training during enrollment and annually." },
+      { h: "Agency's Crucial Role", p: "The source uses Pikes Peak Respite Services as an example of an agency acting as legal employer and ensuring supervision. This is source-specific; follow Dare to Care's approved policies and supervision requirements in your own role." },
+      { h: "The Caregiver Toolkit", p: "The source identifies specialized modules for Alzheimer's/Dementias, Behavioral health, and Family training." },
+      { h: "Empower Independence", p: "The video closes with a reflection on directed care: How does directed care change the healthcare model?" }
+    ],
+    quiz: [
+      { q: "In this training, an IHSS Attendant is:", options: ["A person employed by an IHSS Agency to provide care", "A person who only writes Care Plans", "A person who does not provide care", "A person who may represent themselves as a licensed nurse"], answer: 0, why: "The training defines an Attendant as a person employed by an IHSS Agency to provide care." },
+      { q: "What does the training say an Attendant MUST do?", options: ["Perform assigned Care Plan tasks", "Represent themselves as a licensed nurse", "Skip assigned Care Plan tasks", "Download a certificate before training"], answer: 0, why: "The source states: You MUST perform assigned Care Plan tasks." },
+      { q: "What does the training say an Attendant CANNOT do?", options: ["Attend a virtual session", "Create an individual account", "Represent themselves as a licensed nurse", "Download a completion certificate"], answer: 2, why: "The source states: You CANNOT represent as a licensed nurse." },
+      { q: "Which sequence is shown in the Workday Learning pathway?", options: ["Create individual account, attend virtual session, pass final test, download completion certificate", "Download certificate, create account, attend session, pass final test", "Attend virtual session, download certificate, create account, pass final test", "Pass final test, attend virtual session, create account, download certificate"], answer: 0, why: "The video shows Unique Login, Teams Training, Assessment, then Certificate in that order." },
+      { q: "When does the source say to complete Provider Training?", options: ["Only after downloading a certificate", "During enrollment and annually", "Only when a Care Plan changes", "At any time, with no recurring schedule"], answer: 1, why: "The source says to complete Provider Training during enrollment and annually." }
+    ]
   }
 ];
 
