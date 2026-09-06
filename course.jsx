@@ -150,7 +150,7 @@ function CertStep({course, cfg, rec, onExit, onDownload, busy}){
         <h1 className="title" style={{fontSize:"30px"}}>Your certificate is ready</h1>
         <p className="lead" style={{margin:"0 auto"}}>Certificate for <b>{course.title}</b> — automatically issued in your name.</p>
       </div>
-      <div style={{background:"#eef3f0",borderRadius:"22px",padding:"26px",boxShadow:"var(--shadow-md)"}}>
+      <div style={{background:"#EEF1EE",borderRadius:"22px",padding:"26px",boxShadow:"var(--shadow-md)"}}>
         <CertViewport rec={rec} course={course} cfg={cfg}/>
       </div>
     </div>

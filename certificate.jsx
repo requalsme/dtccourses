@@ -12,7 +12,7 @@ function CertSeal(){
       <defs><path id="sealcircle" d="M59,59 m-44,0 a44,44 0 1,1 88,0 a44,44 0 1,1 -88,0"/></defs>
       <circle cx="59" cy="59" r="57" fill="none" stroke="#B7892F" strokeWidth="1"/>
       <circle cx="59" cy="59" r="45.5" fill="none" stroke="#B7892F" strokeWidth="1"/>
-      <text fontFamily="'Libre Franklin',sans-serif" fontSize="9.2" fontWeight="700" letterSpacing="2.4" fill="#0A5C39">
+      <text fontFamily="'Libre Franklin',sans-serif" fontSize="9.2" fontWeight="700" letterSpacing="2.4" fill="#154C36">
         <textPath href="#sealcircle" startOffset="0%">DARE TO CARE HOME CARE • CERTIFIED CAREGIVER •</textPath>
       </text>
     </svg>
@@ -29,7 +29,7 @@ function Certificate({rec, course, cfg, id="certificate"}){
       <svg className="cert-guilloche" viewBox="0 0 1063 734" preserveAspectRatio="none">
         <defs>
           <pattern id={"gpat-"+course.id} width="34" height="34" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-            <path d="M0 17h34M17 0v34" stroke="#0D7C4D" strokeWidth="0.6"/>
+            <path d="M0 17h34M17 0v34" stroke="#297A57" strokeWidth="0.6"/>
           </pattern>
         </defs>
         <rect width="1063" height="734" fill={`url(#gpat-${course.id})`}/>

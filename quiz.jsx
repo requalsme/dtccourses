@@ -1,6 +1,6 @@
 /* Quiz + Result */
 function Confetti(){
-  const colors=["#0D7C4D","#12A063","#B7892F","#E9D9AE","#0A5C39"];
+  const colors=["#297A57","#2E8250","#B7892F","#E9D9AE","#ABCFBB"];
   const bits=React.useMemo(()=>Array.from({length:90},(_,i)=>({
     left:Math.random()*100, delay:Math.random()*0.6, dur:2.4+Math.random()*1.8,
     rot:Math.random()*360, c:colors[i%colors.length], w:6+Math.random()*7

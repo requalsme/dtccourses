@@ -108,7 +108,7 @@ function SignIn({onSubmit}){
             <li><span className="tick"><Icon name="check" size={14} style={{color:"#fff"}}/></span> Download all {totalCourses} certificates when complete</li>
           </ul>
         </div>
-        <div style={{fontSize:13,color:"#9ecbb2"}}>© {new Date().getFullYear()} Dare to Care Home Care</div>
+        <div style={{fontSize:13,color:"#ABCFBB"}}>© {new Date().getFullYear()} Dare to Care Home Care</div>
       </div>
       <div className="right">
         <form className="signin-card" onSubmit={submit}>
@@ -126,12 +126,12 @@ function SignIn({onSubmit}){
           <div className="field">
             <label>Date of birth</label>
             <input type="date" value={dob} onChange={e=>setDob(e.target.value)} min={dobMin} max={dobMax} autoComplete="bday"/>
-            {dob && !dobOk && <div className="hint" style={{color:"#c0392b"}}>Enter a realistic date of birth. Caregivers must be at least 15.</div>}
+            {dob && !dobOk && <div className="hint" style={{color:"#8F3F4A"}}>Enter a realistic date of birth. Caregivers must be at least 15.</div>}
           </div>
           <div className="field">
             <label>Access code</label>
             <input value={code} onChange={e=>{setCode(e.target.value);setCodeErr(false);}} placeholder="Enter your access code" autoComplete="off"/>
-            {codeErr && <div className="hint" style={{color:"#c0392b"}}>Incorrect access code — please check with your supervisor.</div>}
+            {codeErr && <div className="hint" style={{color:"#8F3F4A"}}>Incorrect access code — please check with your supervisor.</div>}
           </div>
           <button className="btn block lg" disabled={!ok||checking} type="submit">{checking ? "Checking…" : <>Begin training <Icon name="arrow" size={18}/></>}</button>
         </form>
@@ -392,13 +392,13 @@ function App(){
     setState({user:null,dob:null,progress:{}});
   }
 
-  if(handoffPending) return <div style={{minHeight:"100vh",display:"grid",placeItems:"center",fontFamily:"system-ui",color:"#5A6B62"}}><div style={{textAlign:"center"}}><div className="spinner dark" style={{margin:"0 auto 14px"}}></div>Signing you in…</div></div>;
-  if(handoffBlocked) return <div style={{minHeight:"100vh",display:"grid",placeItems:"center",fontFamily:"system-ui",color:"#3B4A43",padding:"24px"}}>
+  if(handoffPending) return <div style={{minHeight:"100vh",display:"grid",placeItems:"center",fontFamily:"system-ui",color:"#586A60"}}><div style={{textAlign:"center"}}><div className="spinner dark" style={{margin:"0 auto 14px"}}></div>Signing you in…</div></div>;
+  if(handoffBlocked) return <div style={{minHeight:"100vh",display:"grid",placeItems:"center",fontFamily:"system-ui",color:"#24332B",padding:"24px"}}>
     <div style={{textAlign:"center",maxWidth:440}}>
       <div style={{fontSize:19,fontWeight:700,marginBottom:10}}>
         {handoffBlocked==="not-released" ? "Your training hasn't been released yet" : "This link has expired"}
       </div>
-      <div style={{fontSize:14,lineHeight:1.6,color:"#5A6B62"}}>
+      <div style={{fontSize:14,lineHeight:1.6,color:"#586A60"}}>
         {handoffBlocked==="not-released"
           ? "Finish your new-hire paperwork in the Dare to Care app first. Once your office manager reviews it they'll release your training, and the link will work."
           : "Training links are only good for a few minutes. Open Training Courses again from the Dare to Care app to get a fresh one."}
@@ -410,15 +410,15 @@ function App(){
   // someone whose training hasn't been released, and nothing on this site can
   // tell the difference — so closing that path is what makes the gate real.
   if(!state.user && (window.DTC_ACCESS||{}).requireAppSignIn) return (
-    <div style={{minHeight:"100vh",display:"grid",placeItems:"center",fontFamily:"system-ui",color:"#3B4A43",padding:"24px"}}>
+    <div style={{minHeight:"100vh",display:"grid",placeItems:"center",fontFamily:"system-ui",color:"#24332B",padding:"24px"}}>
       <div style={{textAlign:"center",maxWidth:430}}>
         <div style={{fontSize:19,fontWeight:700,marginBottom:10}}>Open training from the Dare to Care app</div>
-        <div style={{fontSize:14,lineHeight:1.6,color:"#5A6B62",marginBottom:18}}>
+        <div style={{fontSize:14,lineHeight:1.6,color:"#586A60",marginBottom:18}}>
           Sign in to the Dare to Care app and choose <strong>Training Courses</strong>.
           You'll be brought straight here, already signed in, and your certificates
           will save to your profile automatically.
         </div>
-        <a href="https://forms.daretocarehomecare.com" style={{display:"inline-block",background:"#2f8a68",color:"#fff",textDecoration:"none",padding:"11px 20px",borderRadius:8,fontWeight:600,fontSize:14}}>
+        <a href="https://forms.daretocarehomecare.com" style={{display:"inline-block",background:"#297A57",color:"#fff",textDecoration:"none",padding:"11px 20px",borderRadius:10,fontWeight:600,fontSize:14}}>
           Go to the Dare to Care app
         </a>
       </div>

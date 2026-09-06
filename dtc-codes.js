@@ -78,19 +78,19 @@
       var c=monthlyCodes(R.secret, periodId(new Date()));
       var n=monthlyCodes(R.secret, periodId(monthStart(1)));
       function row(lbl,val){ return '<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:9px 12px;background:#EAF6EF;border:1px solid #cfe9da;border-radius:9px;margin-top:8px">'
-        +'<span style="font-size:12px;color:#5A6B62">'+lbl+'</span>'
-        +'<b style="font-size:18px;letter-spacing:1px;color:#0A5C39">'+val+'</b></div>'; }
+        +'<span style="font-size:12px;color:#586A60">'+lbl+'</span>'
+        +'<b style="font-size:18px;letter-spacing:1px;color:#154C36">'+val+'</b></div>'; }
       var ov=document.createElement("div");
       ov.style.cssText="position:fixed;inset:0;z-index:99999;background:rgba(10,40,28,.55);display:grid;place-items:center;font-family:system-ui,'Segoe UI',sans-serif;padding:18px;overflow:auto";
       ov.innerHTML='<div style="background:#fff;max-width:440px;width:100%;border-radius:16px;padding:26px;box-shadow:0 22px 60px rgba(0,0,0,.32)">'
-        +'<div style="font-size:12px;letter-spacing:1.6px;color:#0D7C4D;font-weight:700">DARE TO CARE · ADMIN</div>'
+        +'<div style="font-size:12px;letter-spacing:1.6px;color:#297A57;font-weight:700">DARE TO CARE · ADMIN</div>'
         +'<h2 style="margin:6px 0 2px;font-size:20px;color:#14352a">Access codes — '+periodLabel(0)+'</h2>'
         +'<p style="font-size:12px;color:#8a988f;margin:2px 0 8px">Any one works · capitalization doesn\'t matter when signing in.</p>'
         +row("Numbers", c.numeric)+row("Letters", c.letters)+row("Letters + numbers", c.alnum)+row("Brand phrase", c.brand)
-        +'<div style="margin-top:16px;font-size:12px;color:#5A6B62">Next month ('+periodLabel(1)+'): '
+        +'<div style="margin-top:16px;font-size:12px;color:#586A60">Next month ('+periodLabel(1)+'): '
         +'<b>'+n.numeric+'</b> · <b>'+n.letters+'</b> · <b>'+n.alnum+'</b> · <b>'+n.brand+'</b></div>'
         +'<p style="font-size:12px;color:#8a988f;margin:14px 0 0;line-height:1.5">They change automatically on the 1st — no deploy. Keep this reveal link private.</p>'
-        +'<button id="dtc-reveal-close" style="margin-top:16px;width:100%;padding:11px;border:0;border-radius:9px;background:#0D7C4D;color:#fff;font-size:15px;font-weight:600;cursor:pointer">Done</button>'
+        +'<button id="dtc-reveal-close" style="margin-top:16px;width:100%;padding:11px;border:0;border-radius:9px;background:#297A57;color:#fff;font-size:15px;font-weight:600;cursor:pointer">Done</button>'
         +'</div>';
       document.body.appendChild(ov);
       var b=document.getElementById("dtc-reveal-close"); if(b) b.onclick=function(){ ov.remove(); };
