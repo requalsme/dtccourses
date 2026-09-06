@@ -140,6 +140,42 @@ function SignIn({onSubmit}){
   );
 }
 
+
+/* The system's leaf, drawn inline so a status stamp carries the brand mark the
+   way it does in the console. A stamp without it is just a coloured pill. */
+function StampLeaf({filled}){
+  return (
+    <svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M20 4c0 8-5 13-12 13H5c0-8 5-13 12-13h3z"
+        fill={filled?"currentColor":"none"} stroke="currentColor" strokeWidth="1.6"
+        strokeLinejoin="round" opacity={filled?.9:.75}/>
+      <path d="M5 20c2-5 6-8 11-10" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/>
+    </svg>
+  );
+}
+
+/* Section label: mono eyebrow, count in the serif, hairline rule to the end of
+   the row. Lifted from the console's MonoLabel — the rule is what makes a page
+   read as sections rather than as a run of headings. */
+function MonoRule({children, count, style}){
+  return (
+    <div className="mono-rule" style={style}>
+      <span className="eyebrow">{children}</span>
+      {count!=null && <span className="count">{count}</span>}
+      <span className="rule"/>
+    </div>
+  );
+}
+
+function Stamp({tone="todo", children}){
+  return (
+    <span className={"stamp "+tone}>
+      <span className="leaf"><StampLeaf filled={tone==="passed"}/></span>
+      <span className="word">{children}</span>
+    </span>
+  );
+}
+
 function CourseCard({course, rec, onOpen}){
   const passed=rec?.passed;
   return (
@@ -158,8 +194,8 @@ function CourseCard({course, rec, onOpen}){
           <span>{course.quiz.length} questions</span>
         </div>
         {passed
-          ? <span className="status-pill passed"><Icon name="award" size={14}/> {rec.score}% · Passed</span>
-          : <span className="status-pill todo">Start <Icon name="arrow" size={13}/></span>}
+          ? <Stamp tone="passed">{rec.score}% passed</Stamp>
+          : <Stamp tone="todo">Start</Stamp>}
       </div>
     </div>
   );
@@ -196,6 +232,7 @@ function Dashboard({courses, progress, name, onOpen, goCerts}){
         </div>
       </div>
 
+      <MonoRule count={courses.length}>Modules</MonoRule>
       <div className="course-grid">
         {courses.map(c=><CourseCard key={c.id} course={c} rec={progress[c.id]} onOpen={()=>onOpen(c.id)}/>)}
       </div>
@@ -293,6 +330,7 @@ function Certificates({courses, progress, name, cfg, toast}){
         </div>
       </div>
 
+      <MonoRule count={earned.length} style={{marginTop:30}}>Earned</MonoRule>
       <div className="cert-grid">
         {courses.map(c=>{
           const rec=progress[c.id];
