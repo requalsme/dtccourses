@@ -46,49 +46,34 @@ function scallopPath(cx, cy, r, teeth){
   return d + "Z";
 }
 
-/* The agency mark: an infinity ribbon with a leaf growing in each loop.
- *
- * This is the real logo, not the single-loop simplification that ships as
- * mark-leaf.png — both exist in the brand folder, and the infinity is the one
- * the lockup actually uses. It is also the more meaningful of the two on a
- * certificate: continuing care, and something living in each half of it.
- *
- * Drawn as a lemniscate rather than as two overlapping circles, so the ribbon
- * genuinely crosses itself at the centre the way the printed logo does.
- * Centred on the origin so it drops into the medallion at any scale.
- */
-function MarkLeaf({transform, ink, cut}){
-  return (
-    <g transform={transform}>
-      <path d="M -9.2,9.2 Q -7.4,-2.8 9.2,-9.2 Q 7.4,2.8 -9.2,9.2 Z" fill={ink}/>
-      {/* Veins carved back out in the medallion colour — the leaf is not
-          outlined, it is cut, which is how the printed mark is built. */}
-      <g stroke={cut} strokeWidth="1.15" strokeLinecap="round" fill="none">
-        <path d="M -7.6,7.6 L 7.4,-7.4"/>
-        <path d="M -3.9,3.9 L -2.5,-0.2"/>
-        <path d="M -3.9,3.9 L 0.2,2.5"/>
-        <path d="M 0.5,-0.5 L 1.9,-4.6"/>
-        <path d="M 0.5,-0.5 L 4.6,-1.9"/>
-      </g>
-    </g>
-  );
-}
-
+/* The agency mark: an open ring with a leaf growing up through the gap.
+   Centred on the origin so it can be dropped into the medallion at any scale. */
 function DTCMark({ring = SEAL_CREAM, cut = SEAL_GREEN}){
+  /* Proportions taken off the brand PNG rather than guessed. On the original,
+     the ring's stroke is a little over a fifth of its outer diameter and the
+     leaf runs about three quarters of that diameter — a thinner ring makes the
+     two shapes merge into one blob at seal size, which is what the first cut
+     of this did. */
   return (
     <g>
-      {/* A true lemniscate: the path runs left loop -> centre -> right loop ->
-          centre -> left, so the ribbon genuinely crosses itself in the middle
-          the way the printed logo does. Returning to the centre point instead,
-          as the first attempt did, pinches the two loops together and the mark
-          reads as two circles touching rather than as an infinity. */}
-      <path
-        d="M -30,0 C -30,-22 -12,-22 0,0 C 12,22 30,22 30,0 C 30,-22 12,-22 0,0 C -12,22 -30,22 -30,0 Z"
-        fill="none" stroke={ring} strokeWidth="6.6" strokeLinejoin="round" strokeLinecap="round"/>
-      {/* One leaf per loop, each turned outward so the pair reads as growth
-          away from the crossing rather than as a mirrored ornament. */}
-      <MarkLeaf transform="translate(-17,1) scale(-1,1)" ink={ring} cut={cut}/>
-      <MarkLeaf transform="translate(17,1.5)" ink={ring} cut={cut}/>
+      {/* The ring, open at the lower left where the leaf comes through. */}
+      <path d="M -27.57,-4.86 A 28,28 0 1 1 -9.58,26.31"
+        fill="none" stroke={ring} strokeWidth="14" strokeLinecap="butt"/>
+      {/* The leaf, growing out of the opening and up across the ring. */}
+      <path d="M -24,24 Q -20,-6 16,-14 Q 12,16 -24,24 Z" fill={ring}/>
+      {/* Veins carved back out in the medallion colour, the way the real mark
+         is built — the leaf is not outlined, it is cut. Every stroke is kept
+         inside the leaf's own outline; the first attempt let them run past the
+         tip, which read as scratches rather than veins. */}
+      <g stroke={cut} strokeWidth="1.8" strokeLinecap="round" fill="none">
+        <path d="M -21,21 L 13,-11"/>
+        <path d="M -10.8,11.4 L -8.8,5.9"/>
+        <path d="M -10.8,11.4 L -5.3,13.4"/>
+        <path d="M -4,5 L -2,-0.5"/>
+        <path d="M -4,5 L 1.5,7"/>
+        <path d="M 2.8,-1.4 L 4.8,-6.9"/>
+        <path d="M 2.8,-1.4 L 8.3,0.6"/>
+      </g>
     </g>
   );
 }
@@ -145,7 +130,7 @@ function CertSeal({year}){
         <circle cx={C} cy={C} r="62" fill="none" stroke={SEAL_GOLD} strokeWidth="1.6"/>
         <circle cx={C} cy={C} r="56" fill="none" stroke={SEAL_CREAM} strokeWidth="0.8" opacity="0.5"/>
 
-        <g transform={"translate(" + C + "," + (C - 6) + ") scale(1.34)"}>
+        <g transform={"translate(" + (C + 2.5) + "," + (C - 8) + ") scale(1.16)"}>
           <DTCMark/>
         </g>
 
