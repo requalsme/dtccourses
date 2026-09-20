@@ -467,7 +467,7 @@ function App(){
   function openCourse(id){ setActiveCourse(id); setView("course"); window.scrollTo(0,0); }
   function completeCourse(id,rec){
     setState(s=>({...s,progress:{...s.progress,[id]:rec}}));
-    // Sync a completion record to the DTC app (best-effort; see firebase-sync.js).
+    // Sync a completion record to the DTC app (best-effort; see supabase-sync.js).
     try {
       if (rec && rec.passed && typeof window.DTC_saveCertificate === "function") {
         var c = (courses || []).find(function(x){ return x.id === id; }) || {};
