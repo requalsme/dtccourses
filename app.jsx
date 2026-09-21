@@ -389,8 +389,14 @@ function App(){
         // Verify the handoff rather than trusting whoever opened the link.
         // A new hire only reaches training after an office manager releases it,
         // and a handoff is good for one hop, not indefinitely.
-        var expired = h && h.expiresAt && (new Date(h.expiresAt).getTime() < Date.now());
-        var notReleased = h && h.role === "newHire" && !h.coursesUnlockedAt;
+        // The database has already decided both of these — it refuses a handoff
+        // whose training has not been released, and one that has expired. This
+        // used to re-decide from fields the page happened to hold, which is how
+        // a properly released new hire was told their training was not released:
+        // the bridge answered "ok" and this line went looking for a timestamp
+        // that had never been sent. Policy belongs on one side of the wire.
+        var expired = h && h.expired === true;
+        var notReleased = h && h.notReleased === true;
         if(h && (expired || notReleased)){
           setHandoffBlocked(notReleased ? "not-released" : "expired");
           setHandoffPending(false);

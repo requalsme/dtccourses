@@ -49,15 +49,16 @@
       .catch(function () { return null; });
   }
 
-  /* Sign-in by handoff. app.jsx expects an object with name/email/uid, or a
-     falsy value meaning "carry on as an anonymous learner". The two refusals
-     it can show a reason for — expired, and training not yet released — come
-     back as the shapes it already knows how to read. */
+  /* Sign-in by handoff. Returns the learner, or one of the two refusals the
+     page can give a reason for. The refusals are reported as verdicts rather
+     than as raw fields for the page to judge for itself: the database is what
+     enforces release and expiry, and a second opinion computed on a public
+     page can only ever disagree with it. */
   window.DTC_getHandoff = function (t) {
     return rpc("redeem_course_handoff", { p_token: t || token }).then(function (res) {
       if (!res || !res.status) return null;
-      if (res.status === "expired") return { expiresAt: "1970-01-01T00:00:00.000Z" };
-      if (res.status === "not-released") return { role: "newHire", coursesUnlockedAt: null };
+      if (res.status === "expired") return { expired: true };
+      if (res.status === "not-released") return { notReleased: true };
       if (res.status !== "ok") return null;
       if (t) token = t;
       return { uid: res.uid, name: res.name, email: res.email, role: res.role };
