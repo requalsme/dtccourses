@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Dare to Care Home Care">
+  <!--
+    The tab icon, reduced from the brand mark.
+
+    The lockup is an infinity drawn from two leaves. At 16 pixels an infinity
+    is two grey smudges, so this keeps the half that still reads at that size:
+    one leaf, its vein, on the brand's deep green. Same shape a person already
+    associates with the agency, drawn as flat vector so it stays crisp on a
+    retina tab and in a bookmark bar.
+  -->
+  <rect width="64" height="64" rx="14" fill="#154C36"/>
+  <path d="M17.5 46.5C17.5 31.9 29.4 20 44 20h2.5v2.5C46.5 37.1 34.6 49 20 49h-2.5v-2.5z" fill="#FFFFFF"/>
+  <path d="M19.5 46.5C25.8 38 33.4 31.9 42.5 28" stroke="#154C36" stroke-width="2.6" stroke-linecap="round" fill="none"/>
+</svg>
