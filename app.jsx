@@ -462,7 +462,7 @@ function App(){
           You'll be brought straight here, already signed in, and your certificates
           will save to your profile automatically.
         </div>
-        <a href="https://forms.daretocarehomecare.com" style={{display:"inline-block",background:"#297A57",color:"#fff",textDecoration:"none",padding:"11px 20px",borderRadius:10,fontWeight:600,fontSize:14}}>
+        <a href="https://portal.daretocarehomecare.com" style={{display:"inline-block",background:"#297A57",color:"#fff",textDecoration:"none",padding:"11px 20px",borderRadius:10,fontWeight:600,fontSize:14}}>
           Go to the Dare to Care app
         </a>
       </div>
