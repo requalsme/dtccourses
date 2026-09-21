@@ -112,8 +112,8 @@ function SignIn({onSubmit}){
       </div>
       <div className="right">
         <form className="signin-card" onSubmit={submit}>
-          <h3>Let's get started</h3>
-          <p className="sub">Enter your information exactly as it should appear on your certificates.</p>
+          <h3>Sign in to your training</h3>
+          <p className="sub">Your name is printed on every certificate exactly as entered here.</p>
           <div className="field">
             <label>First name</label>
             <input value={first} onChange={e=>setFirst(tidyName(e.target.value))} maxLength={40} autoComplete="given-name" autoFocus/>
